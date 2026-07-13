@@ -7,17 +7,16 @@
   <!-- SEO & Social tags -->
   <meta name="description" content="ChatNex is a free AI chatbot for smart searching and conversations. Ask anything and get instant answers.">
   <meta name="keywords" content="ChatNex, AI chatbot, smart search, free chatbot, conversational AI">
-  <meta name="author" content="Your Name">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="ChatNex">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <meta property="og:title" content="ChatNex - Smart AI Chatbot">
   <meta property="og:description" content="ChatNex helps you search and chat instantly with AI.">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://yourwebsite.com">
-  <meta property="og:image" content="https://yourwebsite.com/chatnex-preview.png">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="ChatNex - Smart AI Chatbot">
-  <meta name="twitter:description" content="ChatNex helps you search and chat instantly with AI.">
-  <meta name="twitter:image" content="https://yourwebsite.com/chatnex-preview.png">
+  
+  <!-- Google Fonts for Modern Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" type="text/css" href="/static/css/style.css">
   <link rel="stylesheet" type="text/css" href="/static/css/mobile.css">
@@ -27,7 +26,8 @@
   <!-- Loading Screen -->
   <div class="loading-screen" id="loadingScreen">
     <div class="loading-container">
-      <img src="/static/icon/chatnex.png" alt="ChatNex Logo" class="loading-logo">
+      <div class="loading-spinner"></div>
+      <h1 class="loading-text">Chat<span>Nex</span></h1>
     </div>
   </div>
 
@@ -35,34 +35,112 @@
     <!-- Sidebar - Chat History -->
     <aside class="sidebar" id="sidebar">
       <div class="sidebar-header">
+        <div class="logo">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+          </svg>
+          <span>ChatNex</span>
+        </div>
         <button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle sidebar">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M3 12h18M3 6h18M3 18h18"/>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
           </svg>
         </button>
       </div>
+
       <button class="new-chat-btn" id="newChatBtn">
-        <span>+</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="12" y1="5" x2="12" y2="19"></line>
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+        </svg>
         <span>New Chat</span>
       </button>
+
       <div class="chat-history" id="chatHistory">
+        <!-- Dynmically rendered -->
         <div class="chat-history-empty">No chat history yet</div>
+      </div>
+      
+      <div class="sidebar-footer">
+        <button class="clear-all-btn" id="clearAllHistoryBtn" title="Clear all history">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="3 6 5 6 21 6"></polyline>
+            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+            <line x1="10" y1="11" x2="10" y2="17"></line>
+            <line x1="14" y1="11" x2="14" y2="17"></line>
+          </svg>
+          <span>Clear Data</span>
+        </button>
       </div>
     </aside>
 
     <!-- Main Content -->
     <div class="main-content">
+      <!-- Ambient Glow Dots (Premium Accent Elements) -->
+      <div class="ambient-glow bg-glow-1"></div>
+      <div class="ambient-glow bg-glow-2"></div>
+
       <header id="pageHeader">
+
         <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle menu">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M3 12h18M3 6h18M3 18h18"/>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
           </svg>
         </button>
-        <h2>ChatNex</h2>
+        <div class="header-center">
+          <h2>ChatNex</h2>
+        </div>
+        <button class="theme-toggle" id="themeToggleBtn" aria-label="Toggle Dark/Light Mode">
+          <!-- Sun Icon -->
+          <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+          <!-- Moon Icon -->
+          <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+        </button>
       </header>
 
+      <!-- Welcome Board / Dashboard Greeting -->
       <div id="greeting" class="greeting">
-        <p>Hello! I am ChatNex. How can I help you today?</p>
+        <div class="welcome-container">
+          <div class="welcome-badge">Powered by Grok AI</div>
+          <h1>How can I help you today?</h1>
+          <p class="subtitle">Ask any question, brainstorm ideas, design plans, or chat with AI instantly.</p>
+        </div>
+
+        <!-- Suggestion Cards -->
+        <div class="suggestion-grid">
+          <button class="suggestion-card" data-prompt="Brainstorm simple project ideas for learning web development.">
+            <h3>💡 Brainstorm ideas</h3>
+            <p>For a new programming, engineering or design project</p>
+          </button>
+          <button class="suggestion-card" data-prompt="Help me write a professional email requesting feedback on a demo.">
+            <h3>✍️ Draft an email</h3>
+            <p>For business proposals, follow-ups, or announcements</p>
+          </button>
+          <button class="suggestion-card" data-prompt="Explain the difference between SQL and NoSQL databases in simple terms.">
+            <h3>🎓 Explain a concept</h3>
+            <p>In science, programming, history, or business</p>
+          </button>
+          <button class="suggestion-card" data-prompt="Write a Python script that calculates the Fibonacci sequence up to N terms.">
+            <h3>💻 Write & debug code</h3>
+            <p>Write boilerplate code, find bugs, or learn syntax</p>
+          </button>
+        </div>
       </div>
 
       <main>
@@ -72,13 +150,20 @@
       </main>
 
       <!-- Input fixed at bottom -->
-      <div class="input-wrap" role="search" aria-label="Chat input">
-        <input id="userInput" type="text" placeholder="Type your message..." aria-label="Type your message" />
-        <button id="sendBtn" aria-label="Send message">Send</button>
-      </div>
+      <footer class="chat-input-container">
+        <div class="input-wrap" role="search" aria-label="Chat input">
+          <input id="userInput" type="text" placeholder="Send a message..." aria-label="Type your message" autocomplete="off" />
+          <button id="sendBtn" aria-label="Send message">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="22" y1="2" x2="11" y2="13"></line>
+              <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+            </svg>
+          </button>
+        </div>
+      </footer>
     </div>
   </div>
 
   <script src="/static/js/main.js"></script>
 </body>
-</html>
+</html>

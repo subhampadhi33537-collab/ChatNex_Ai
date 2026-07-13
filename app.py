@@ -13,8 +13,8 @@ CORS(app)
 
 # Grok / GROQ API setup
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
-if not GROQ_API_KEY:
-    raise RuntimeError("❌ GROQ_API_KEY not found in environment")
+# Do not raise import-time error to ensure Vercel bundle builds successfully
+
 
 # API endpoint (can override via env) - use Groq's OpenAI-compatible endpoint
 # Note: previous default used 'grok' (typo) which causes SSL name mismatch errors.
@@ -68,24 +68,48 @@ def handle_chat_data(data):
     try:
         message = data.get("message", "").strip()
         session_id = data.get("session_id", "default")
+        history = data.get("history") # Client-side passed chat history for state-free operation
 
         if not message:
             return {"error": "Empty message"}, 400
 
-        if session_id not in chat_history:
-            chat_history[session_id] = []
+        payload_messages = []
+        if history is not None:
+            # Client provided history: process statelessly
+            for msg in history:
+                role = msg.get("role")
+                if role == "bot" or role == "assistant":
+                    role = "assistant"
+                else:
+                    role = "user"
+                content = msg.get("content") or msg.get("text") or ""
+                payload_messages.append({"role": role, "content": content})
+            # Append current user prompt
+            payload_messages.append({"role": "user", "content": message})
+        else:
+            # Stateful fallback (in-memory)
+            if session_id not in chat_history:
+                chat_history[session_id] = []
+            chat_history[session_id].append({"role": "user", "content": message})
+            payload_messages = chat_history[session_id]
 
-        chat_history[session_id].append({"role": "user", "content": message})
+        api_key = os.getenv("GROQ_API_KEY") or GROQ_API_KEY
+        if not api_key:
+            return {"error": "GROQ_API_KEY is not configured in Vercel settings or environment."}, 500
 
-        payload = {"model": MODEL_NAME, "messages": chat_history[session_id]}
-        headers = {"Authorization": f"Bearer {GROQ_API_KEY}", "Content-Type": "application/json"}
+        payload = {"model": MODEL_NAME, "messages": payload_messages}
+        headers = {"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"}
+
 
         resp = requests.post(GROK_API_URL, headers=headers, json=payload, timeout=15)
         bot_reply = _extract_reply_from_response(resp)
 
-        chat_history[session_id].append({"role": "assistant", "content": bot_reply})
+        # In stateful fallback mode, register assistant reply locally
+        if history is None:
+            chat_history[session_id].append({"role": "assistant", "content": bot_reply})
 
         return {"reply": bot_reply, "session_id": session_id}, 200
+
 
     except Exception as e:
         error_str = str(e)

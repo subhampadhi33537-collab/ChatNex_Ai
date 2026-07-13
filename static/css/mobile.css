@@ -1,11 +1,1 @@
-/* Mobile overrides for ChatNex - minimal to avoid 404 on deploy */
-@media (max-width: 480px) {
-  .app-container { padding: 0; }
-  .sidebar { transform: translateX(-100%); }
-  .sidebar.mobile-open { transform: translateX(0); }
-  .input-wrap { padding: 0.5rem; }
-  .input-wrap input { font-size: 16px; }
-  .new-chat-btn { padding: 0.6rem 0.8rem; }
-}
-
-/* Keep file intentionally small — specific mobile styles exist in sidebar-mobile.css */
+/* Mobile CSS overrides consolidated into style.css */
